@@ -1,0 +1,245 @@
+export const mockCandidates = [
+  {
+    id: 'c1',
+    name: 'Alice Johnson',
+    role: 'Senior React Developer',
+    experience: '5 years',
+    location: 'Gujarat, India',
+    skills: ['React', 'TypeScript', 'Node.js', 'GraphQL'],
+    fraudRisk: 'LOW',
+    summary: 'Senior full-stack engineer with 5 years experience building scalable applications with React and Node.js. Strong problem-solving skills and excellent team player.',
+    atsScore: 92,
+    skillMatches: [
+      { skill: 'React', candidate_score: 95, jd_required: 90 },
+      { skill: 'TypeScript', candidate_score: 85, jd_required: 80 },
+      { skill: 'GraphQL', candidate_score: 75, jd_required: 70 },
+      { skill: 'Node.js', candidate_score: 80, jd_required: 60 },
+    ]
+  },
+  {
+    id: 'c2',
+    name: 'Bob Smith',
+    role: 'Frontend Engineer',
+    experience: '3 years',
+    location: 'Mumbai, India',
+    skills: ['React', 'JavaScript', 'CSS', 'Redux'],
+    fraudRisk: 'MEDIUM',
+    summary: 'Frontend developer with 3 years of experience. Solid foundation in React and state management. Noticeable gap in employment history.',
+    atsScore: 78,
+    skillMatches: [
+      { skill: 'React', candidate_score: 80, jd_required: 90 },
+      { skill: 'JavaScript', candidate_score: 85, jd_required: 80 },
+      { skill: 'CSS', candidate_score: 90, jd_required: 70 },
+      { skill: 'Redux', candidate_score: 70, jd_required: 60 },
+    ]
+  },
+  {
+    id: 'c3',
+    name: 'Charlie Davis',
+    role: 'Full Stack Engineer',
+    experience: '7 years',
+    location: 'Bengaluru, India',
+    skills: ['React', 'Python', 'AWS', 'Docker'],
+    fraudRisk: 'LOW',
+    summary: 'Experienced engineer skilled in React and Python. Has successfully led multiple cloud migration projects.',
+    atsScore: 88,
+    skillMatches: [
+      { skill: 'React', candidate_score: 85, jd_required: 90 },
+      { skill: 'Python', candidate_score: 90, jd_required: 80 },
+      { skill: 'AWS', candidate_score: 80, jd_required: 70 },
+      { skill: 'Docker', candidate_score: 75, jd_required: 60 },
+    ]
+  },
+  {
+    id: 'c4',
+    name: 'Diana Prince',
+    role: 'React Developer',
+    experience: '2 years',
+    location: 'Gujarat, India',
+    skills: ['React', 'JavaScript', 'Tailwind'],
+    fraudRisk: 'HIGH',
+    summary: 'Junior developer with potential. Discrepancy detected between claimed experience and public profile timeline.',
+    atsScore: 65,
+    skillMatches: [
+      { skill: 'React', candidate_score: 60, jd_required: 90 },
+      { skill: 'JavaScript', candidate_score: 70, jd_required: 80 },
+      { skill: 'Tailwind', candidate_score: 80, jd_required: 70 },
+    ]
+  },
+  {
+    id: 'c5',
+    name: 'Evan Wright',
+    role: 'UI/UX Developer',
+    experience: '4 years',
+    location: 'Pune, India',
+    skills: ['React', 'Figma', 'CSS Animations'],
+    fraudRisk: 'LOW',
+    summary: 'Design-focused developer with an excellent eye for detail. Combines React expertise with strong UI design skills.',
+    atsScore: 82,
+    skillMatches: [
+      { skill: 'React', candidate_score: 75, jd_required: 90 },
+      { skill: 'Figma', candidate_score: 95, jd_required: 80 },
+      { skill: 'CSS', candidate_score: 90, jd_required: 70 },
+    ]
+  },
+  {
+    id: 'c6',
+    name: 'Fiona Gallagher',
+    role: 'Backend Developer',
+    experience: '6 years',
+    location: 'Bengaluru, India',
+    skills: ['Node.js', 'Express', 'MongoDB'],
+    fraudRisk: 'LOW',
+    summary: 'Specializes in backend technologies. Looking to transition into a full-stack role but currently lacks deep frontend experience.',
+    atsScore: 60,
+    skillMatches: [
+      { skill: 'Node.js', candidate_score: 95, jd_required: 90 },
+      { skill: 'MongoDB', candidate_score: 90, jd_required: 80 },
+      { skill: 'React', candidate_score: 40, jd_required: 70 },
+    ]
+  },
+  {
+    id: 'c7',
+    name: 'George Miller',
+    role: 'Senior Frontend Engineer',
+    experience: '8 years',
+    location: 'Delhi, India',
+    skills: ['React', 'Vue', 'Angular', 'TypeScript'],
+    fraudRisk: 'LOW',
+    summary: 'Veteran frontend engineer. Highly versatile and capable of architecting complex web applications from scratch.',
+    atsScore: 96,
+    skillMatches: [
+      { skill: 'React', candidate_score: 95, jd_required: 90 },
+      { skill: 'Vue', candidate_score: 90, jd_required: 80 },
+      { skill: 'TypeScript', candidate_score: 95, jd_required: 70 },
+    ]
+  },
+  {
+    id: 'c8',
+    name: 'Hannah Abbott',
+    role: 'React Developer',
+    experience: '3 years',
+    location: 'Gujarat, India',
+    skills: ['React', 'Redux', 'Jest'],
+    fraudRisk: 'LOW',
+    summary: 'Solid React developer with a strong focus on testing and quality assurance. Writes highly maintainable code.',
+    atsScore: 85,
+    skillMatches: [
+      { skill: 'React', candidate_score: 85, jd_required: 90 },
+      { skill: 'Redux', candidate_score: 80, jd_required: 80 },
+      { skill: 'Jest', candidate_score: 90, jd_required: 70 },
+    ]
+  },
+  {
+    id: 'c9',
+    name: 'Ian Malcolm',
+    role: 'Data Scientist',
+    experience: '5 years',
+    location: 'Mumbai, India',
+    skills: ['Python', 'Machine Learning', 'SQL'],
+    fraudRisk: 'MEDIUM',
+    summary: 'Strong AI/ML background but applies for frontend roles without clear frontend experience shown on resume.',
+    atsScore: 55,
+    skillMatches: [
+      { skill: 'Python', candidate_score: 95, jd_required: 90 },
+      { skill: 'React', candidate_score: 30, jd_required: 80 },
+      { skill: 'Machine Learning', candidate_score: 90, jd_required: 70 },
+    ]
+  },
+  {
+    id: 'c10',
+    name: 'Julia Roberts',
+    role: 'Full Stack Engineer',
+    experience: '4 years',
+    location: 'Pune, India',
+    skills: ['React', 'Node.js', 'PostgreSQL'],
+    fraudRisk: 'LOW',
+    summary: 'Balanced full-stack skills. Good communication and solid project delivery record.',
+    atsScore: 84,
+    skillMatches: [
+      { skill: 'React', candidate_score: 80, jd_required: 90 },
+      { skill: 'Node.js', candidate_score: 85, jd_required: 80 },
+      { skill: 'PostgreSQL', candidate_score: 80, jd_required: 70 },
+    ]
+  },
+  {
+    id: 'c11',
+    name: 'Kevin Hart',
+    role: 'Junior Frontend Developer',
+    experience: '1 year',
+    location: 'Gujarat, India',
+    skills: ['HTML', 'CSS', 'JavaScript', 'React'],
+    fraudRisk: 'LOW',
+    summary: 'Enthusiastic beginner. Needs mentorship but shows great willingness to learn.',
+    atsScore: 68,
+    skillMatches: [
+      { skill: 'React', candidate_score: 50, jd_required: 90 },
+      { skill: 'JavaScript', candidate_score: 65, jd_required: 80 },
+      { skill: 'CSS', candidate_score: 80, jd_required: 70 },
+    ]
+  },
+  {
+    id: 'c12',
+    name: 'Laura Dern',
+    role: 'Lead Frontend Engineer',
+    experience: '10 years',
+    location: 'Bengaluru, India',
+    skills: ['React', 'System Design', 'Team Leadership'],
+    fraudRisk: 'LOW',
+    summary: 'Exceptional leader and architect. Capable of driving technical vision for large teams.',
+    atsScore: 98,
+    skillMatches: [
+      { skill: 'React', candidate_score: 95, jd_required: 90 },
+      { skill: 'System Design', candidate_score: 95, jd_required: 80 },
+      { skill: 'Leadership', candidate_score: 100, jd_required: 70 },
+    ]
+  },
+  {
+    id: 'c13',
+    name: 'Mike Wheeler',
+    role: 'React Developer',
+    experience: '3 years',
+    location: 'Delhi, India',
+    skills: ['React', 'Next.js', 'Tailwind'],
+    fraudRisk: 'HIGH',
+    summary: 'Skills look good on paper, but flagged for multiple identical applications under different names.',
+    atsScore: 81,
+    skillMatches: [
+      { skill: 'React', candidate_score: 80, jd_required: 90 },
+      { skill: 'Next.js', candidate_score: 85, jd_required: 80 },
+      { skill: 'Tailwind', candidate_score: 85, jd_required: 70 },
+    ]
+  },
+  {
+    id: 'c14',
+    name: 'Nina Dobrev',
+    role: 'Mobile Developer',
+    experience: '4 years',
+    location: 'Mumbai, India',
+    skills: ['React Native', 'iOS', 'Android'],
+    fraudRisk: 'LOW',
+    summary: 'Mobile specialist. Transitioning to web frontend might require some ramp-up time.',
+    atsScore: 75,
+    skillMatches: [
+      { skill: 'React Native', candidate_score: 90, jd_required: 90 },
+      { skill: 'React', candidate_score: 60, jd_required: 80 },
+      { skill: 'iOS', candidate_score: 85, jd_required: 70 },
+    ]
+  },
+  {
+    id: 'c15',
+    name: 'Oscar Isaac',
+    role: 'Senior Software Engineer',
+    experience: '6 years',
+    location: 'Gujarat, India',
+    skills: ['React', 'GraphQL', 'AWS', 'Python'],
+    fraudRisk: 'LOW',
+    summary: 'Very strong candidate. Fits the "React developers in Gujarat" query perfectly.',
+    atsScore: 95,
+    skillMatches: [
+      { skill: 'React', candidate_score: 95, jd_required: 90 },
+      { skill: 'GraphQL', candidate_score: 90, jd_required: 80 },
+      { skill: 'Python', candidate_score: 85, jd_required: 70 },
+    ]
+  }
+];

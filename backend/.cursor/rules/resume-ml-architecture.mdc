@@ -1,0 +1,23 @@
+---
+alwaysApply: true
+---
+# Resume Parsing Architecture
+
+For this project, the **backend must never parse resumes directly**. All resume
+extraction logic lives in an external ML service.
+
+- The upload endpoint in [`app/routers/candidate_router.py`](mdc:app/routers/candidate_router.py)
+  must:
+  - accept the uploaded PDF/DOCX,
+  - (optionally) store the raw file path on the candidate record,
+  - forward the **raw file bytes** to the ML service defined by
+    `RESUME_ML_ENDPOINT` in [`app/config.py`](mdc:app/config.py) using
+    `multipart/form-data`,
+  - receive structured JSON (name, email, phone, skills, education,
+    experience_years, etc.),
+  - map that JSON onto the `Candidate` model, and
+  - persist the full ML response into `Candidate.parsed_json`.
+
+- Do **not** add regex/NLP parsing or PDF text extraction inside the backend.
+  The ML service is the single source of truth for resume understanding.
+

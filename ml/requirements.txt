@@ -1,0 +1,19 @@
+# ── Core Framework ────────────────────────────────────────
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+pydantic==2.7.4
+python-multipart==0.0.9
+
+# ── ML / AI ───────────────────────────────────────────────
+sentence-transformers==3.0.1
+scikit-learn==1.5.1
+spacy==3.7.5
+chromadb==0.5.3
+
+# ── PDF Processing ────────────────────────────────────────
+PyMuPDF==1.24.5
+pdfminer.six==20231228
+
+# ── Utilities ─────────────────────────────────────────────
+python-dotenv==1.0.1
+numpy==1.26.4

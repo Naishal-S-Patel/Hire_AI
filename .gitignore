@@ -1,0 +1,52 @@
+# Global ignores for this mono-workspace
+
+# Secrets and local envs
+.env
+.env.*
+**/.env
+**/.env.*
+
+# Python caches and virtual environments
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+backend/venv311/
+ml/venv/
+
+# Node / frontend outputs
+node_modules/
+**/node_modules/
+dist/
+build/
+
+# IDE and OS files
+.idea/
+.vscode/
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+
+# Local data and uploads
+uploads/
+backend/uploads/
+ml/uploads/
+data/chroma/
+backend/data/chroma/
+ml/chroma_db/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Notebook checkpoints
+.ipynb_checkpoints/
