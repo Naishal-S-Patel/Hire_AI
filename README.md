@@ -154,13 +154,13 @@ http://localhost:5173
 
 # 🌐 Live Demo
 
-https://hireai-beryl.vercel.app
+https://ai-based-recruitment.vercel.app/
 
 ---
 
 # 📸 Screenshots
 
-### Login Page
+
 
 
 
