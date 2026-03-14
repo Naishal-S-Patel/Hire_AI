@@ -26,7 +26,6 @@ langchain==0.2.6
 langchain-openai==0.1.14
 
 # ── Whisper (video assessment) ────────────────────────────
-openai-whisper==20231117
 ffmpeg-python==0.2.0
 
 # ── Utilities ─────────────────────────────────────────────
