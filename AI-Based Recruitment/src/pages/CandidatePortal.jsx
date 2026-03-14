@@ -4,14 +4,14 @@ import UploadForm from '../components/candidate/UploadForm';
 import VideoScreeningSimple from '../components/candidate/VideoScreeningSimple';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, FileText, Video, CheckCircle2, AlertCircle, ArrowLeft, Sparkles, Mail } from 'lucide-react';
+import { User, FileText, Video, CheckCircle2, ChevronRight, AlertCircle, ArrowLeft } from 'lucide-react';
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+const API = 'http://localhost:8000/api/v1';
 
 const steps = [
-  { id: 1, label: 'Basic Info', icon: User },
-  { id: 2, label: 'Resume', icon: FileText },
-  { id: 3, label: 'Screening', icon: Video },
+  { id: 1, label: 'Basic Info', icon: <User className="w-5 h-5" /> },
+  { id: 2, label: 'Resume', icon: <FileText className="w-5 h-5" /> },
+  { id: 3, label: 'Screening', icon: <Video className="w-5 h-5" /> }
 ];
 
 const CandidatePortal = () => {
@@ -58,8 +58,7 @@ const CandidatePortal = () => {
           setCandidateId(existingId);
           setStep(2);
         } else {
-          const msg = typeof detail === 'object' ? detail?.message : detail;
-          setError(msg || 'A candidate with this email or phone already exists.');
+          setError('A candidate with this email or phone already exists. Please contact HR if this error persists.');
         }
       } else if (err.response?.status === 401) {
         setError('Session expired. Please log in again.');
@@ -74,63 +73,52 @@ const CandidatePortal = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 py-10 px-4 sm:px-6 lg:px-8 font-sans">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 font-sans selection:bg-primary/20">
+      <div className="max-w-3xl mx-auto">
 
         {/* Header */}
-        <div className="text-center mb-10">
-          <motion.div
-            initial={{ scale: 0, rotate: -10 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-            className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-blue-700 text-white mb-5 shadow-xl shadow-primary/30"
+        <div className="text-center mb-12">
+          <motion.div 
+            initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary text-white mb-6 shadow-xl shadow-primary/30"
           >
-            <Sparkles className="w-7 h-7" />
+             <User className="w-8 h-8" />
           </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: -16 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-3xl font-extrabold text-foreground tracking-tight mb-1"
+          <motion.h1 
+            initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
+            className="text-4xl font-extrabold text-foreground tracking-tight mb-2"
           >
             Candidate Portal
           </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="text-muted-foreground text-sm"
+          <motion.p 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
+            className="text-muted-foreground font-medium"
           >
             Complete your application in 3 simple steps
           </motion.p>
         </div>
 
         {/* Stepper */}
-        <div className="flex justify-center items-center mb-10">
+        <div className="flex justify-center items-center mb-12 relative z-10">
           {steps.map((s, i) => {
             const isDone = step > s.id;
             const isActive = step === s.id;
-            const Icon = s.icon;
+            
             return (
               <div key={s.id} className="flex items-center">
-                <div className="flex flex-col items-center">
-                  <motion.div
+                <div className="flex flex-col items-center relative">
+                  <motion.div 
                     layout
-                    className={`w-11 h-11 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
-                      isDone
-                        ? 'border-success bg-success text-white shadow-md shadow-success/30'
-                        : isActive
-                        ? 'border-primary bg-white text-primary shadow-md shadow-primary/20'
-                        : 'border-slate-200 bg-white text-slate-400'
-                    }`}
+                    className={`w-12 h-12 rounded-full flex items-center justify-center border-2 z-10 bg-white transition-colors duration-300 ${isDone ? 'border-success bg-success text-white' : isActive ? 'border-primary text-primary shadow-md shadow-primary/20' : 'border-slate-200 text-slate-400'}`}
                   >
-                    {isDone ? <CheckCircle2 className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
+                    {isDone ? <CheckCircle2 className="w-6 h-6" /> : s.icon}
                   </motion.div>
-                  <span className={`mt-2 text-xs font-semibold whitespace-nowrap ${isDone ? 'text-success' : isActive ? 'text-primary' : 'text-slate-400'}`}>
+                  <div className={`absolute top-14 text-xs font-semibold whitespace-nowrap ${isDone ? 'text-success' : isActive ? 'text-primary' : 'text-slate-400'}`}>
                     {s.label}
-                  </span>
+                  </div>
                 </div>
                 {i < steps.length - 1 && (
-                  <div className={`w-16 sm:w-24 h-0.5 mx-2 mb-5 rounded-full transition-colors duration-500 ${step > s.id ? 'bg-success' : 'bg-slate-200'}`} />
+                  <div className={`w-16 sm:w-24 h-1 mx-2 rounded-full transition-colors duration-500 mb-6 ${step > s.id ? 'bg-success' : 'bg-slate-200'}`} />
                 )}
               </div>
             );
@@ -140,128 +128,89 @@ const CandidatePortal = () => {
         {/* Error Banner */}
         <AnimatePresence>
           {error && (
-            <motion.div
-              initial={{ opacity: 0, y: -8, height: 0 }}
-              animate={{ opacity: 1, y: 0, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="bg-red-50 border border-red-200 rounded-xl p-4 mb-5 flex items-start gap-3 text-red-700"
+            <motion.div 
+              initial={{ opacity: 0, y: -10, height: 0 }} animate={{ opacity: 1, y: 0, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
+              className="bg-destructive/10 border border-destructive/20 rounded-xl p-4 mb-6 flex items-center gap-3 text-destructive"
             >
-              <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-              <span className="text-sm font-medium flex-1">{error}</span>
-              <button onClick={() => setError('')} className="text-red-400 hover:text-red-600 text-lg leading-none">&times;</button>
+              <AlertCircle className="w-5 h-5 flex-shrink-0" />
+              <span className="text-sm font-medium">{error}</span>
+              <button onClick={() => setError('')} className="ml-auto text-destructive hover:text-red-700 p-1">
+                &times;
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
 
         {/* Main Card */}
-        <motion.div layout className="bg-white rounded-3xl shadow-glass border border-slate-100 overflow-hidden">
+        <motion.div 
+          layout
+          className="bg-white rounded-3xl p-8 sm:p-10 shadow-glass border border-slate-100 relative overflow-hidden"
+        >
           <AnimatePresence mode="wait">
-
-            {/* Step 1 — Basic Info */}
             {step === 1 && (
-              <motion.div key="step1" initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 24 }} className="p-8 sm:p-10">
-                <div className="mb-7">
-                  <div className="flex items-center gap-3 mb-1">
-                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <User className="w-4 h-4 text-primary" />
-                    </div>
-                    <h2 className="text-xl font-bold text-foreground">Basic Information</h2>
-                  </div>
-                  <p className="text-muted-foreground text-sm ml-11">Tell us a bit about yourself to get started.</p>
+              <motion.div key="step1" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
+                <div className="mb-8">
+                  <h2 className="text-2xl font-bold text-foreground mb-2">Basic Information</h2>
+                  <p className="text-muted-foreground text-sm">Tell us a bit about yourself to get started.</p>
                 </div>
                 <BasicDetailsForm onSubmit={handleBasicDetailsSubmit} initialEmail={userEmail} disabled={submitting} />
               </motion.div>
             )}
 
-            {/* Step 2 — Resume */}
             {step === 2 && (
-              <motion.div key="step2" initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 24 }} className="p-8 sm:p-10">
-                <div className="mb-7">
-                  <div className="flex items-center gap-3 mb-1">
-                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <FileText className="w-4 h-4 text-primary" />
-                    </div>
-                    <h2 className="text-xl font-bold text-foreground">Upload Resume</h2>
-                  </div>
-                  <p className="text-muted-foreground text-sm ml-11">Our AI will automatically parse your skills and experience.</p>
+              <motion.div key="step2" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
+                <div className="mb-8">
+                  <h2 className="text-2xl font-bold text-foreground mb-2">Upload Resume</h2>
+                  <p className="text-muted-foreground text-sm">Our AI will automatically parse your skills and experience.</p>
                 </div>
                 <UploadForm onUploadSuccess={() => setStep(3)} candidateId={candidateId} />
                 <button
                   onClick={() => setStep(1)}
-                  className="mt-6 flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  className="mt-6 flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  <ArrowLeft className="w-4 h-4" /> Back to Basic Info
+                  <ArrowLeft className="w-4 h-4 mr-1.5" /> Back to Basic Info
                 </button>
               </motion.div>
             )}
 
-            {/* Step 3 — Screening */}
             {step === 3 && (
-              <motion.div key="step3" initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 24 }} className="p-8 sm:p-10">
-                <div className="mb-7">
-                  <div className="flex items-center gap-3 mb-1">
-                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <Video className="w-4 h-4 text-primary" />
-                    </div>
-                    <h2 className="text-xl font-bold text-foreground">Quick Screening</h2>
-                  </div>
-                  <p className="text-muted-foreground text-sm ml-11">Answer a few short questions to complete your profile.</p>
+              <motion.div key="step3" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
+                <div className="mb-8">
+                  <h2 className="text-2xl font-bold text-foreground mb-2">Quick Screening</h2>
+                  <p className="text-muted-foreground text-sm">Answer a few short situational questions to complete your profile.</p>
                 </div>
                 <VideoScreeningSimple candidateId={candidateId} onComplete={() => setStep(4)} />
                 <button
                   onClick={() => setStep(2)}
-                  className="mt-6 flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  className="mt-6 flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  <ArrowLeft className="w-4 h-4" /> Back to Resume Upload
+                  <ArrowLeft className="w-4 h-4 mr-1.5" /> Back to Resume Upload
                 </button>
               </motion.div>
             )}
 
-            {/* Step 4 — Done */}
             {step === 4 && (
-              <motion.div key="step4" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="p-8 sm:p-10 text-center">
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: 'spring', delay: 0.1 }}
-                  className="w-20 h-20 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-6"
-                >
-                  <div className="w-14 h-14 bg-success rounded-full flex items-center justify-center shadow-lg shadow-success/30">
-                    <CheckCircle2 className="w-7 h-7 text-white" />
+              <motion.div key="step4" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-10">
+                <div className="w-24 h-24 bg-success/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <div className="w-16 h-16 bg-success rounded-full flex items-center justify-center shadow-lg shadow-success/30">
+                    <CheckCircle2 className="w-8 h-8 text-white" />
                   </div>
-                </motion.div>
-
-                <h2 className="text-2xl font-extrabold text-foreground mb-3">Application Submitted!</h2>
-                <p className="text-muted-foreground text-sm mb-8 max-w-sm mx-auto">
-                  Your profile, resume, and screening responses have been recorded. HR will review your application shortly.
-                </p>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
-                  {[
-                    { icon: User, label: 'Profile', desc: 'Saved' },
-                    { icon: FileText, label: 'Resume', desc: 'Parsed by AI' },
-                    { icon: CheckCircle2, label: 'Screening', desc: 'Completed' },
-                  ].map(({ icon: Icon, label, desc }) => (
-                    <div key={label} className="bg-slate-50 border border-slate-100 rounded-xl p-4 flex flex-col items-center gap-1">
-                      <Icon className="w-5 h-5 text-success mb-1" />
-                      <span className="text-xs font-bold text-foreground">{label}</span>
-                      <span className="text-xs text-muted-foreground">{desc}</span>
-                    </div>
-                  ))}
                 </div>
-
-                <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4 text-sm font-medium text-primary flex items-center justify-center gap-2">
-                  <Mail className="w-4 h-4" />
+                <h2 className="text-3xl font-extrabold text-foreground mb-4">Application Submitted!</h2>
+                <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+                  Your profile, resume, and screening responses have been recorded. Our AI has matched you with open roles, and HR will review your application shortly.
+                </p>
+                <div className="bg-primary/5 border border-primary/20 rounded-2xl p-5 text-sm font-medium text-primary flex items-center justify-center gap-3">
+                  <CheckCircle2 className="w-5 h-5" />
                   You'll be notified via email about next steps.
                 </div>
               </motion.div>
             )}
-
           </AnimatePresence>
         </motion.div>
 
         {step < 4 && (
-          <p className="text-center text-muted-foreground/50 text-xs mt-6">
+          <p className="text-center text-muted-foreground/60 text-xs mt-8 font-medium">
             Your data is securely processed by HireAI.
           </p>
         )}

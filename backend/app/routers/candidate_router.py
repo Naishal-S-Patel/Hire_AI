@@ -1151,92 +1151,70 @@ async def hire_candidate(
                 today = datetime.now().strftime("%B %d, %Y")
                 start = body.start_date or (datetime.now() + timedelta(days=30)).strftime("%B %d, %Y")
 
-            offer_html = f"""
-            <html>
-            <body style="font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto; padding: 20px;">
-                <div style="background: linear-gradient(135deg, #0f766e, #14b8a6); padding: 30px; border-radius: 12px 12px 0 0; text-align: center;">
-                    <h1 style="color: white; margin: 0; font-size: 28px;">🎉 Job Offer Letter</h1>
-                    <p style="color: rgba(255,255,255,0.8); margin-top: 8px;">HireAI</p>
-                </div>
-                <div style="border: 1px solid #e5e7eb; border-top: none; padding: 30px; border-radius: 0 0 12px 12px;">
-                    <p style="font-size: 14px; color: #6b7280;">Date: {today}</p>
-                    <p style="font-size: 16px; color: #111827;">Dear <strong>{candidate.full_name}</strong>,</p>
-
-                    <p>We are pleased to inform you that you have been selected to join HireAI.
-                    Based on your profile and qualifications, we would like to offer you the
-                    opportunity to become a part of our team.</p>
-
-                    <div style="background: #f0f9ff; border-left: 4px solid #0f766e; padding: 16px; margin: 20px 0; border-radius: 0 8px 8px 0;">
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <tr><td style="padding: 8px 0; color: #6b7280;">Position:</td><td style="padding: 8px 0; font-weight: bold; color: #111827;">{body.position}</td></tr>
-                            <tr><td style="padding: 8px 0; color: #6b7280;">Department:</td><td style="padding: 8px 0; font-weight: bold; color: #111827;">{body.department}</td></tr>
-                            <tr><td style="padding: 8px 0; color: #6b7280;">Compensation:</td><td style="padding: 8px 0; font-weight: bold; color: #111827;">{body.salary}</td></tr>
-                            <tr><td style="padding: 8px 0; color: #6b7280;">Start Date:</td><td style="padding: 8px 0; font-weight: bold; color: #111827;">{start}</td></tr>
-                        </table>
+                offer_html = f"""
+                <html>
+                <body style="font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto; padding: 20px;">
+                    <div style="background: linear-gradient(135deg, #0f766e, #14b8a6); padding: 30px; border-radius: 12px 12px 0 0; text-align: center;">
+                        <h1 style="color: white; margin: 0; font-size: 28px;">Job Offer Letter</h1>
+                        <p style="color: rgba(255,255,255,0.8); margin-top: 8px;">HireAI</p>
                     </div>
+                    <div style="border: 1px solid #e5e7eb; border-top: none; padding: 30px; border-radius: 0 0 12px 12px;">
+                        <p style="font-size: 14px; color: #6b7280;">Date: {today}</p>
+                        <p style="font-size: 16px; color: #111827;">Dear <strong>{candidate.full_name}</strong>,</p>
+                        <p>We are pleased to inform you that you have been selected to join HireAI.</p>
+                        <div style="background: #f0f9ff; border-left: 4px solid #0f766e; padding: 16px; margin: 20px 0; border-radius: 0 8px 8px 0;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <tr><td style="padding: 8px 0; color: #6b7280;">Position:</td><td style="padding: 8px 0; font-weight: bold; color: #111827;">{body.position}</td></tr>
+                                <tr><td style="padding: 8px 0; color: #6b7280;">Department:</td><td style="padding: 8px 0; font-weight: bold; color: #111827;">{body.department}</td></tr>
+                                <tr><td style="padding: 8px 0; color: #6b7280;">Compensation:</td><td style="padding: 8px 0; font-weight: bold; color: #111827;">{body.salary}</td></tr>
+                                <tr><td style="padding: 8px 0; color: #6b7280;">Start Date:</td><td style="padding: 8px 0; font-weight: bold; color: #111827;">{start}</td></tr>
+                            </table>
+                        </div>
+                        <p>Please confirm your acceptance by replying to this email within <strong>7 business days</strong>.</p>
+                        <p style="margin-top: 30px;">Sincerely,<br/><strong>Hiring Team</strong><br/><strong>HireAI</strong></p>
+                    </div>
+                </body>
+                </html>
+                """
 
-                    <p>This letter serves as a preliminary offer of employment confirming your
-                    selection at HireAI. We are excited about the possibility of you contributing to
-                    our growing organization.</p>
+                msg = MIMEMultipart("mixed")
+                msg["Subject"] = f"Job Offer Letter — {body.position} at HireAI"
+                msg["From"] = settings.EMAIL_ADDRESS
+                msg["To"] = candidate_email
 
-                    <p>Please confirm your acceptance by replying to this email within <strong>7 business days</strong>.</p>
+                html_part = MIMEMultipart("alternative")
+                html_part.attach(MIMEText(offer_html, "html"))
+                msg.attach(html_part)
 
-                    <p>We look forward to welcoming you to HireAI.</p>
+                # Generate and attach offer letter PDF dynamically
+                try:
+                    from app.services.generate_offer_letter import generate_offer_letter_pdf
+                    pdf_bytes = generate_offer_letter_pdf(
+                        candidate_name=candidate.full_name,
+                        position=body.position,
+                        department=body.department,
+                        salary=body.salary,
+                        start_date=start,
+                    )
+                    pdf_attachment = MIMEBase("application", "pdf")
+                    pdf_attachment.set_payload(pdf_bytes)
+                    encoders.encode_base64(pdf_attachment)
+                    safe_name = candidate.full_name.replace(' ', '_').replace('"', '').replace("'", '')
+                    pdf_attachment.add_header(
+                        "Content-Disposition",
+                        f"attachment; filename=HireAI_Offer_Letter_{safe_name}.pdf",
+                    )
+                    msg.attach(pdf_attachment)
+                except Exception as pdf_err:
+                    print(f"Offer letter PDF generation failed: {pdf_err}")
 
-                    <p style="margin-top: 30px;">
-                        Sincerely,<br/>
-                        <strong>Hiring Team</strong><br/>
-                        <strong>HireAI</strong><br/>
-                        <a href="mailto:recruiting@example.com">recruiting@example.com</a>
-                    </p>
-                </div>
-            </body>
-            </html>
-            """
-
-            msg = MIMEMultipart("mixed")
-            msg["Subject"] = f"🎉 Job Offer Letter — {body.position} at HireAI"
-            msg["From"] = settings.EMAIL_ADDRESS or "recruiting@example.com"
-            msg["To"] = candidate_email
-
-            # Attach HTML body
-            html_part = MIMEMultipart("alternative")
-            html_part.attach(MIMEText(offer_html, "html"))
-            msg.attach(html_part)
-
-            # Generate and attach offer letter PDF dynamically
-            try:
-                from app.services.generate_offer_letter import generate_offer_letter_pdf
-                pdf_bytes = generate_offer_letter_pdf(
-                    candidate_name=candidate.full_name,
-                    position=body.position,
-                    department=body.department,
-                    salary=body.salary,
-                    start_date=start,
-                )
-                pdf_attachment = MIMEBase("application", "pdf")
-                pdf_attachment.set_payload(pdf_bytes)
-                encoders.encode_base64(pdf_attachment)
-                safe_name = candidate.full_name.replace(' ', '_').replace('"', '').replace("'", '')
-                pdf_attachment.add_header(
-                    "Content-Disposition",
-                    f"attachment; filename=HireAI_Offer_Letter_{safe_name}.pdf",
-                )
-                msg.attach(pdf_attachment)
-            except Exception as pdf_err:
-                print(f"Offer letter PDF generation failed: {pdf_err}")
-                # Email will still be sent without PDF attachment
-
-            with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
-                smtp.login(
-                    settings.EMAIL_ADDRESS or "your-email@example.com",
-                    settings.EMAIL_PASSWORD or "your-app-password",
-                )
-                smtp.send_message(msg)
-            email_sent = True
-        except Exception as e:
-            logger.error(f"Offer email failed: {e}")
-            print(f"Offer email failed: {e}")
+                with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+                    smtp.login(settings.EMAIL_ADDRESS, settings.EMAIL_PASSWORD)
+                    smtp.send_message(msg)
+                email_sent = True
+            except Exception as e:
+                logger.error(f"Offer email failed: {e}")
+                print(f"Offer email failed: {e}")
 
         # Push to OrangeHRM (optional - don't fail if this fails)
         orangehrm_result = {"pushed": False, "message": "Not attempted"}

@@ -173,21 +173,23 @@ export const CandidateDetailPanel = ({ candidate, onReject }) => {
   return (
     <div className="flex-1 bg-white border border-border/60 rounded-xl shadow-sm overflow-hidden flex flex-col h-full">
       {/* Header */}
-      <div className="p-6 border-b border-border/60 flex justify-between items-start bg-gradient-to-r from-slate-50 to-white">
-        <div className="flex items-center gap-4">
-          <div className="w-14 h-14 bg-gradient-to-br from-primary to-blue-700 text-white rounded-2xl flex items-center justify-center text-xl font-bold shadow-md">
-            {(candidate.full_name || candidate.name || 'U').charAt(0).toUpperCase()}
+      <div className="p-6 border-b border-border/60 flex justify-between items-start bg-slate-50">
+        <div className="flex items-center">
+          <div className="w-16 h-16 bg-primary text-foreground rounded-full flex items-center justify-center text-2xl font-bold shadow-sm">
+            {(candidate.full_name || candidate.name || 'Unknown').charAt(0)}
           </div>
-          <div>
-            <h2 className="text-xl font-bold text-foreground tracking-tight leading-tight">{(candidate.full_name || candidate.name || 'Unknown')}</h2>
-            <p className="text-sm font-medium text-primary mt-0.5">{candidate.role || 'Candidate'}</p>
+          <div className="ml-5">
+            <h2 className="text-2xl font-bold text-foreground tracking-tight">{(candidate.full_name || candidate.name || 'Unknown')}</h2>
+            <p className="text-base font-medium text-primary mt-1">{candidate.role}</p>
           </div>
         </div>
-        <div className="flex flex-col items-end gap-2">
-          <span className="inline-flex items-center px-3 py-1.5 bg-primary text-white rounded-xl text-sm font-bold shadow-sm">
-            ATS {(candidate.ats_score || candidate.atsScore || 0)}/100
-          </span>
-          <FraudBadge riskLevel={activeFraud.riskLevel} />
+        <div className="text-right">
+          <div className="inline-flex items-center px-3 py-1 bg-primary text-foreground rounded-lg text-sm font-medium shadow-sm mb-2">
+            ATS Score: {(candidate.ats_score || candidate.atsScore || 0)}/100
+          </div>
+          <div>
+            <FraudBadge riskLevel={activeFraud.riskLevel} />
+          </div>
         </div>
       </div>
 
@@ -218,77 +220,80 @@ export const CandidateDetailPanel = ({ candidate, onReject }) => {
         </section>
 
         {/* Action Buttons */}
-        <div className="pt-4 border-t border-border/60 space-y-3">
-          {/* Row 1: Primary actions */}
-          <div className="grid grid-cols-2 gap-2.5">
-            {!shortlisted ? (
-              <button
-                onClick={() => setShortlisted(true)}
-                className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 shadow-md shadow-emerald-200 hover:shadow-lg transition-all active:scale-[0.98]"
-              >
-                <CheckCircle className="w-4 h-4" /> Shortlist
-              </button>
-            ) : (
-              <div className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-emerald-700 bg-emerald-50 border-2 border-emerald-400">
-                <CheckCircle className="w-4 h-4" /> Shortlisted
-              </div>
-            )}
-
-            <button
-              onClick={() => setShowScheduler(true)}
-              className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 shadow-md shadow-blue-200 hover:shadow-lg transition-all active:scale-[0.98]"
+        <div className="flex flex-wrap gap-3 pt-4 border-t border-border/60">
+          {!shortlisted ? (
+            <button 
+              onClick={() => setShortlisted(true)}
+              className="flex-1 min-w-[120px] bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-md hover:shadow-lg"
             >
-              <Calendar className="w-4 h-4" /> Schedule Interview
+              ✓ Shortlist
             </button>
-          </div>
+          ) : (
+            <div className="flex-1 min-w-[120px] bg-emerald-50 border-2 border-emerald-500 text-emerald-700 px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center justify-center gap-2">
+              <CheckCircle className="w-4 h-4" />
+              Shortlisted
+            </div>
+          )}
+          
+          <button 
+            onClick={() => setShowScheduler(true)}
+            className="flex-1 min-w-[140px] bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-md hover:shadow-lg"
+          >
+            📅 Schedule Interview
+          </button>
 
-          {/* Row 2: Secondary actions */}
-          <div className="grid grid-cols-2 gap-2.5">
-            {resumeUrl && (
-              <button
-                onClick={() => setShowPdfViewer(true)}
-                className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-slate-700 bg-white border-2 border-slate-200 hover:border-slate-400 hover:bg-slate-50 transition-all active:scale-[0.98]"
-              >
-                <Eye className="w-4 h-4" /> Preview Resume
-              </button>
-            )}
-
-            {shortlisted && (
-              <button
-                onClick={() => setShowAssessment(!showAssessment)}
-                className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 shadow-md shadow-violet-200 hover:shadow-lg transition-all active:scale-[0.98]"
-              >
-                <ClipboardCheck className="w-4 h-4" /> Assessment
-              </button>
-            )}
-          </div>
-
-          {/* Row 3: Hire / Reject */}
-          <div className="grid grid-cols-2 gap-2.5">
-            {!hired ? (
-              <button
-                onClick={() => setShowHireModal(true)}
-                disabled={hiring}
-                className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 shadow-md shadow-teal-200 hover:shadow-lg transition-all active:scale-[0.98] disabled:opacity-60"
-              >
-                {hiring ? <Loader2 className="w-4 h-4 animate-spin" /> : <UserCheck className="w-4 h-4" />}
-                {hiring ? 'Hiring...' : 'Hire Candidate'}
-              </button>
-            ) : (
-              <div className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-teal-700 bg-teal-50 border-2 border-teal-400">
-                <UserCheck className="w-4 h-4" /> Hired {hireResult?.offer_email_sent ? '✉️' : ''}
-              </div>
-            )}
-
-            <button
-              onClick={handleReject}
-              disabled={rejecting}
-              className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 shadow-md shadow-red-200 hover:shadow-lg transition-all active:scale-[0.98] disabled:opacity-60"
+          {shortlisted && (
+            <button 
+              onClick={() => setShowAssessment(!showAssessment)}
+              className="flex-1 min-w-[160px] bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
             >
-              {rejecting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
-              {rejecting ? 'Rejecting...' : 'Reject'}
+              <ClipboardCheck className="w-4 h-4" />
+              Technical Assessment
             </button>
-          </div>
+          )}
+
+          {resumeUrl && (
+            <button
+              onClick={() => setShowPdfViewer(true)}
+              className="flex-none bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-md hover:shadow-lg flex items-center gap-2"
+            >
+              <Eye size={16} />
+              Preview Resume
+            </button>
+          )}
+
+          {/* Hire Button */}
+          {!hired && (
+            <button
+              onClick={() => setShowHireModal(true)}
+              disabled={hiring}
+              className="flex-1 min-w-[120px] bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white px-4 py-2.5 rounded-lg text-sm font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+            >
+              {hiring ? (
+                <><Loader2 className="w-4 h-4 animate-spin" /> Hiring...</>
+              ) : (
+                <><UserCheck className="w-4 h-4" /> Hire Candidate</>
+              )}
+            </button>
+          )}
+          {hired && (
+            <div className="flex-1 min-w-[120px] bg-teal-50 border-2 border-teal-500 text-teal-700 px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center justify-center gap-2">
+              <CheckCircle className="w-4 h-4" />
+              Hired {hireResult?.offer_email_sent ? '✉️' : ''}
+            </div>
+          )}
+
+          <button 
+            onClick={handleReject}
+            disabled={rejecting}
+            className="flex-none bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-md hover:shadow-lg flex items-center gap-2"
+          >
+            {rejecting ? (
+              <><Loader2 className="w-4 h-4 animate-spin" /> Rejecting...</>
+            ) : (
+              <><Trash2 className="w-4 h-4" /> Reject</>
+            )}
+          </button>
         </div>
 
         {/* Hire Modal */}
