@@ -160,10 +160,17 @@ https://ai-based-recruitment.vercel.app/
 
 # 📸 Screenshots
 
+### Landing Page
+![Landing Page](img1.jpeg)
 
+### Recruiter Dashboard
+![Dashboard](img2.jpeg)
 
+### Talent Ingestion
+![Talent Ingestion](img3.jpeg)
 
-
+### Recruitment Pipeline
+![Pipeline](img4.jpeg)
 ---
 
 # 🔮 Future Improvements
